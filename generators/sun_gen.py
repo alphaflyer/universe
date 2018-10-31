@@ -16,7 +16,7 @@ def collect_suns(cur):
 
     for row in suns:
         comm[0].append(row[0])
-        comm[1].append(int(row[1]*100000))
+        comm[1].append(int(row[1]*100000))  #to fix the problem with the very small values
 
     return comm
 
