@@ -1,0 +1,198 @@
+/* COLOR THEME DARK TO LIGHT
+#343d46	(52,61,70)
+#4f5b66	(79,91,102)
+#65737e	(101,115,126)
+#a7adba	(167,173,186)
+#c0c5ce	(192,197,206) 
+background-color: #22282e; 
+comp: #007FFF;
+comp: #FFA000;
+
+COLOR:
+
+0F66A2
+0A2A3F
+051C27
+09A597
+02070B
+
+*/
+
+body {
+    background: url(../img/ui-grid.png) repeat center top;
+    background-color: #02070B;
+    color: #c0c5ce;
+    font-family: 'Orbitron', sans-serif;
+    /*width: 95vw;
+    height: 95vh;*/
+    text-transform: uppercase;
+    }
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+table, th, td {
+    border: 1px solid #0F66A2;
+}
+th {
+    background-color: #0A2A3F;
+    height: 30px;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+h1 {
+
+    font-size: 4vmax;
+}
+
+p { font-size: 2vmin;
+    font-weight: 200;}
+
+a {
+    font-size: 4vmin;
+    color: white;
+    margin: 2vmax;
+    /*text-align: center;*/  
+    font-weight: 400;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    display: block;
+  }
+
+.flex-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+.col {
+    flex: 1;
+    /*width: 33%;*/
+    height: 32vmin;
+    margin: 2vmin;
+    background-color: #0A2A3F; 
+    border: 1px solid #0F66A2;
+  }
+
+.loading{       
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    animation: blinker 1s linear infinite;
+  }
+
+.controls {
+    position: absolute;
+    top: 93vmin;
+    left: 1vmax;
+    width: 25vmax;
+    text-align: left;
+    z-index: 101;
+    /*display: block;*/
+    background-color: rgba(0,0,0,0);
+  }
+
+.button {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    border: none;
+    color: black;
+    padding: 15px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.8vmax;
+    background-color: rgba(255,255, 255,0.2);
+}
+
+.button {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: rgb(76, 175, 170); /* Green */
+  color: white;
+}
+
+.info {
+    position: absolute;
+    top: 1vmax;
+    left: 1vmax;
+    width: 25vmax;
+    text-align: left;
+    z-index: 100;
+    /*display: block;*/
+    background-color: rgba(0,0,0,0);
+  }
+
+.infotext {
+    font-size: 0.8vmax;
+    line-height: 2vmax;
+  /*-moz-animation: showHide 5s ease-in;/* alternate infinite; /* Firefox */
+  /*-webkit-animation: showHide 5s ease-in;/* alternate infinite; /* Safari and Chrome */
+  /*-ms-animation: showHide 5s ease-in;/* alternate infinite; /* IE10 */
+  /*-o-animation: showHide 5s ease-in;/* alternate infinite; /* Opera */
+  /*animation: showHide 5s ease-in;/* alternate infinite;
+}
+
+@-webkit-keyframes showHide { /* Chrome, Safari */
+    0% {width:100%}
+    40% {width:0%}
+    60% {width:0%;}
+    100% {width:100%;}
+}
+@-moz-keyframes showHide { /* FF */
+    0% {width:100%}
+    40% {width:0%}
+    60% {width:0%;}
+    100% {width:100%;}
+}
+@-ms-keyframes showHide { /* IE10 */
+    0% {width:100%}
+    40% {width:0%}
+    60% {width:0%;}
+    100% {width:100%;}
+}
+@-o-keyframes showHide { /* Opera */
+    0% {width:100%}
+    40% {width:0%}
+    60% {width:0%;}
+    100% {width:100%;}
+}
+@keyframes showHide {
+    0% {width:100%}
+    40% {width:0%}
+    60% {width:0%;}
+    100% {width:100%;}
+}
+
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+
+ 
+
+@media (max-width: 600px) {
+    .flex-grid {
+      display: block;
+      .col {
+        width: 100vmin;
+        margin: 2vmin;
+      }
+    }
+  }
+
+* {
+    box-sizing: border-box;
+  }
+
+
