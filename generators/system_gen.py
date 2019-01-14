@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
-import random, MySQLdb, array, math, uuid, string
+import random, MySQLdb, array, uuid, string
 
 suns = []
 sysarray = []
 namearray = []
 lst = []
 
-rowcount = 500 # rows to fetch
+rowcount = 10000 # rows to fetch
 
 db = MySQLdb.connect('localhost','universe','F7V4Z50Jl7HyKFI8','universe')
 cur = db.cursor()
@@ -62,52 +62,26 @@ def sys_array():
     
     return namearray, sysarray
 
-def bind_sun(suns):
-
-    print("Binding sun to system...")
-    #print("Sun Class is: %s") % sun
-
-    
-
-    #return sun
-
 
 def write_sys(sysarray, suns, namearray, lst):
 
-    
-    #syslst = ",".join([str(x) for x in sysarray])
-    #print sysarray
-    syslst = str(sysarray).strip('[]')
-    syslst = "("+syslst+")"
-    sunlst = str(suns).strip('[]')
-    sunlst = "("+sunlst+")"
-    namelst = str(namearray).strip('[]')
-    namelst = "("+namelst+")"
+    x = 0   
 
-    x = 0
-    
+    print("Binding sun to system...")
 
     for arrcount in range(rowcount):
         lst.append("('"+sysarray[x]+"','"+suns[x]+"','"+namearray[x]+"')")
         x = x+1
 
-    #lst = str(lst).strip('[]')
-    #lst = lst.strip("''")
     lst = ",".join([str(x) for x in lst])
-    print lst
 
     sql_query = "INSERT INTO systems (SYSTEM_ID,SUN_ID,System_Name) VALUES  %s" % lst
-
-   
-    #val = syslst, sunlst, namelst
-    #val = sysarray, suns, namearray
-    print sql_query
 
     cur.execute(sql_query)
     
     db.commit()
 
-    print("New systems created and stored in Database! Total: ")
+    print("New systems created and stored in Database! Total: %d") % rowcount
 
     return db
 
