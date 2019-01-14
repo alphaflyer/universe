@@ -1,0 +1,43 @@
+
+$sql = "SELECT  system_positions.SYSTEM_ID, 
+                system_positions.Position_X, 
+                system_positions.Position_Y, 
+                system_positions.Position_Z, 
+                systems.SUN_ID, 
+                systems.System_Name, 
+                suns.SUN_CLASS, 
+                suns.Sun_Name, 
+                suns.Sun_Temp, 
+                suns.Sun_Mass, 
+                suns.Sun_Radius, 
+                suns.Sun_Luminosity, 
+                sun_classes.Chromaticity_hex, 
+                sun_classes.HSL_H, 
+                sun_classes.HSL_S, 
+                sun_classes.HSL_L
+FROM system_positions 
+JOIN systems ON systems.SYSTEM_ID = system_positions.SYSTEM_ID 
+JOIN suns ON systems.SUN_ID = suns.SUN_ID
+JOIN sun_classes ON suns.SUN_CLASS = sun_classes.SUN_CLASS
+LIMIT 50000;";
+
+
+        $array[] = $row;
+        
+        $sysid      = $row["SYSTEM_ID"];
+        $position_x = $row["Position_X"];
+        $position_y = $row["Position_Y"];
+        $position_z = $row["Position_Z"];
+        $sunid      = $row["SUN_ID"];
+        $sysname    = $row["System_Name"];
+        $planetid   = $row["PLANET_ID"];
+        $sunclass   = $row["SUN_CLASS"];
+        $sunname    = $row["Sun_Name"];
+        $suntemp    = $row["Sun_Temp"];
+        $sunmass    = $row["Sun_Mass"];
+        $sunradius  = $row["Sun_Radius"];
+        $sunlumi    = $row["Sun_Luminosity"];
+        $sunhex     = $row["Chromaticity_hex"];
+        $hsl_h      = $row["HSL_H"];
+        $hsl_s      = $row["HSL_S"];
+        $hsl_l      = $row["HSL_L"];

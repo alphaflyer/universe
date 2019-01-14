@@ -3,14 +3,14 @@
 <head>
 <title>System vis</title>
 
-<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300,400" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Orbitron:400,700" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="lib/style/style.css">
 
 
 </head>
 <body>
 
-<h1>System visualisation</h1>
+<p>SYSTEM VIS</p>
 <p></p>
 
 
@@ -18,7 +18,6 @@
 <script src="lib/js/OrbitControls.js"></script>
 <script src="lib/js/libs/stats.min.js"></script>
 <script src="lib/js/libs/dat.gui.min.js"></script>
-<script src="lib/js/OrbitControls.js"></script>
 <script src="lib/js/loaders/GLTFLoader.js"></script>
 
 <script src="lib/js/postprocessing/EffectComposer.js"></script>
@@ -48,173 +47,211 @@ $.ajax({
     dataType: 'JSON',
     async: true,
     success: function(data){
-        console.log(data);
+        //console.log(data);
         jsonObj = data;
       }
 
 });
 
-
-
-
-
 setTimeout(func, 1500);  // needed for proper launch of all AJAX vars
 function func() {
-    console.log('timeout');
-    //console.log(jsonObj);
+    console.log('data collected');
 
     // DRAWING 3D OBJECTS
-			
-            var scene, camera, controls, pointLight, stats;
-			var composer, renderer, mixer;
-			
-            var params = {
-				exposure: 1,
-				bloomStrength: 3,
-				bloomThreshold: 0,
-				bloomRadius: 0
-			};
-			
-            var clock = new THREE.Clock();
-			var container = document.getElementById( 'container' );
-			
-            //stats = new Stats();
-			//container.appendChild( stats.dom );
-			
-            renderer = new THREE.WebGLRenderer( { antialias: true } );
-			renderer.setPixelRatio( window.devicePixelRatio );
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.toneMapping = THREE.ReinhardToneMapping;
-			container.appendChild( renderer.domElement );
-			
-            scene = new THREE.Scene();
-			
-            camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 500 );
-			camera.position.set( - 5, 2.5, - 305 );
-			scene.add( camera );
-			
-            controls = new THREE.OrbitControls( camera, renderer.domElement );
-			controls.maxPolarAngle = Math.PI * 0.5;
-			controls.minDistance = 1;
-			controls.maxDistance = 350;
-			
-            scene.add( new THREE.AmbientLight( 0x404040 ) );
-			
-            pointLight = new THREE.PointLight( 0xffffff, 1 );
-			camera.add( pointLight );
-			
-            var renderScene = new THREE.RenderPass( scene, camera );
-			
-            var bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
-			bloomPass.renderToScreen = true;
-			bloomPass.threshold = params.bloomThreshold;
-			bloomPass.strength = params.bloomStrength;
-			bloomPass.radius = params.bloomRadius;
-			
-            composer = new THREE.EffectComposer( renderer );
-			composer.setSize( window.innerWidth, window.innerHeight );
-			composer.addPass( renderScene );
-			composer.addPass( bloomPass );
-            
-            //test = jsonObj[0].Sun_Radius;
-            //console.log(test);
 
-            // Set up the sphere vars
-                var radius = 40;
-                var SEGMENTS = 16;
-                var RINGS = 16;
-                var distance = 400;
+	
+        var scene, camera, controls, pointLight, stats;
+		var spheres, xplanes, glxcenter, composer, renderer;
 
-                spheres = new THREE.Object3D();
+        var params = {
+				exposure: 1.5,
+				bloomStrength: 1.5,
+				bloomThreshold: 0.06,
+				bloomRadius: 0                
+			};			
 
-                // create the sphere's material
-                var x = 0;
-                console.log(jsonObj[0].Position_X);
-                console.log(jsonObj[0].Position_Y);
-                console.log(jsonObj[0].Position_Z);
+        var clock = new THREE.Clock();
+		var container = document.getElementById( 'container' );
+			
+        stats = new Stats();
+		container.appendChild( stats.dom );			
+	
+        scene = new THREE.Scene();
+			
+        camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+		camera.position.set( 0, 700, - 1000 );
+	    scene.add( camera );
 
-                for (var i = 0; i < jsonObj.length; i++) {
+        renderer = new THREE.WebGLRenderer( { antialias: true } );
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		container.appendChild( renderer.domElement );
+			
+        controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.maxPolarAngle = 360; 
+		controls.minDistance = 1;
+		controls.maxDistance = 2000;
+			
+        scene.add( new THREE.AmbientLight( 0x404040, 1 ) );
+			
+        pointLight = new THREE.PointLight( 0xba15f4, 1000 );
+	    //camera.add( pointLight );			
+
+        var renderScene = new THREE.RenderPass( scene, camera );
+			
+        var bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 0, 0, 0 );
+        bloomPass.renderToScreen = true;
+        bloomPass.exposure = params.exposure;
+        bloomPass.threshold = params.bloomThreshold;
+        bloomPass.strength = params.bloomStrength;
+        bloomPass.radius = params.bloomRadius;
+
+        composer = new THREE.EffectComposer( renderer );
+		composer.setSize( window.innerWidth, window.innerHeight );
+		composer.addPass( renderScene );
+		composer.addPass( bloomPass );
+         
+        // Set up the sphere vars
+        var segments = 16;
+        var rings = 16;
+                
+        //spheres = new THREE.Object3D();
+        son1 = new THREE.Object3D();
+        son2 = new THREE.Object3D();
+        son3 = new THREE.Object3D();
+        son4 = new THREE.Object3D();
+
+        var x = 0;
+
+            for (var i = 0; i < jsonObj.length; i++) {
                     
                     radius = jsonObj[x].Sun_Radius;
-                    var sphere = new THREE.SphereGeometry(radius, SEGMENTS, RINGS);
-                    suncolor = parseInt((jsonObj[x].Chromaticity_hex).slice(1),16);
-                    //sunhex = sunhex.substring(1); //remove the # from  color
-                    //sunhex = parseInt(sunhex.slice(1), 16);
-                
-                    var material = new THREE.MeshLambertMaterial(
-                    {
-                    color: suncolor
-                    });
-
-                                  
-                    //creating the mesh and add primitive and material
-                    var particle = new THREE.Mesh(sphere, material);
+                    var sphere = new THREE.SphereGeometry(radius, segments, rings);
+                    var suncolor = parseInt ( (jsonObj[x].Chromaticity_hex).replace("#","0x"), 16 );
+                            
+                    var sunmat = new THREE.MeshStandardMaterial(
+                        {
+                        color: suncolor,
+                        emissive: suncolor//,
+                        //emissiveIntensity: 1000
+                        });
+                                    
+                    var sun = new THREE.Mesh(sphere, sunmat);
+                    
                     //randomly set position and scale
-                    particle.position.x = jsonObj[x].Position_X;
-                    particle.position.y = jsonObj[x].Position_Y;
-                    particle.position.z = jsonObj[x].Position_Z;
-                    //particle.rotation.y = Math.floor(Math.random() * 101);
-                    //particle.scale.x = particle.scale.y = particle.scale.z = Math.random() * 12 + 5;
+                    sun.position.x = jsonObj[x].Position_X;
+                    sun.position.y = jsonObj[x].Position_Z;   // Z & Y position need to be switched
+                    sun.position.z = jsonObj[x].Position_Y;
                     //add particle to the spheres group
-                    spheres.add(particle);
 
-                    x++;
-                }
+                    var a = new THREE.Vector3( sun.position.x, sun.position.y, sun.position.z );
+                    var b = new THREE.Vector3( );
+                    var d = a.distanceTo( b );
+                    
+                    if (d < 300) {    
 
-                //correct spheres position relative to the camera
-                spheres.position.y = 0;
-                spheres.position.x = 0;
-                spheres.position.z = 0;
-                spheres.rotation.y = 0;
-                //add spheres to the scene
-                scene.add(spheres);
+                        son1.add(sun);
+                        //console.log(d);
+                        
+                    }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////			
-    // I DONT KNOW WHY THIS CODE IS NEEDED BUT I CANT DELETE IT BECAUSE IT STOPS RENDERING THEN
-    ///////////////////////////////////////////////////////////////////////////////////////////////
+                    else if (d > 300 && d < 800) { 
+
+                        son2.add(sun);
+                        //console.log(d);
+                    }
+
+                    else if (d > 800 && d < 999) {
+
+                            son3.add(sun);
+
+                    }
+
+                    else {
+
+                        son4.add(sun);
+                        //console.log(d);
+                    }
+                    
+
+                x++;
+            }
+
+            scene.add(son1);
+            scene.add(son2);
+            scene.add(son3);
+            scene.add(son4);
+
+        //correct spheres position relative to the camera
+        //spheres.position.y = 0;
+        //spheres.position.x = 0;
+        //spheres.position.z = 0;
+        //add spheres to the scene
+        //scene.add(spheres);
         
-        new THREE.GLTFLoader().load( 'lib/models/gltf/SimpleSkinning.glb', function ( gltf ) {
-				
-            //scene.add( model );
-            
-            // Mesh contains self-intersecting semi-transparent faces, which display
-            // z-fighting unless depthWrite is disabled.
-            //var core = model.getObjectByName( 'geo1_HoloFillDark_0' );
-            //core.material.depthWrite = false;                       
-              
-            var model = gltf.scene;
-            mixer = new THREE.AnimationMixer( model );
+        xplanes = new THREE.Object3D();
+
+            for (var i = 0; i < 1000; i = i + 20 ) {
                 
-            var clip = gltf.animations[ 0 ];
-            mixer.clipAction( clip.optimize() ).play();
-            animate();
-            
-            } );           			
+                var geometry = new THREE.CylinderGeometry(i,i,0.1,32);
+                var xplanemat = new THREE.MeshStandardMaterial( {
+                                                                color: 0x0F66A2, 
+                                                                transparent: false, 
+                                                                wireframe: true,
+                                                                emissive: 0x0F66A2,
+                                                                emissiveIntensity: (0.5-i*0.001)} );
+                var cylinder = new THREE.Mesh( geometry, xplanemat );
+                xplanes.add(cylinder);
+            }
            
-		
-        window.onresize = function () {
-			var width = window.innerWidth;
-			var height = window.innerHeight;
-			camera.aspect = width / height;
-			camera.updateProjectionMatrix();
-			renderer.setSize( width, height );
-			composer.setSize( width, height );
-			};
-			
-    ///////////////////////////////////////////////////////////////////////////////////////////////			
-    // I DONT KNOW WHY THIS CODE IS NEEDED BUT I CANT DELETE IT BECAUSE IT STOPS RENDERING THEN
-    ///////////////////////////////////////////////////////////////////////////////////////////////
+            
+            scene.add(xplanes);                
+    
+        scene.add(xplanes);
         
-        function animate() {
+        glxcenter = new THREE.Object3D();
+    
+            var geometry = new THREE.SphereGeometry(10,16,16);
+            var glxmat = new THREE.MeshStandardMaterial( {
+                                                                color: 0xffecaf, 
+                                                                emissive: 0xffecaf,
+                                                                emissiveIntensity: 10000} );
+                                                                
+            var glx = new THREE.Mesh( geometry, glxmat );
+        glxcenter.add(glx);
+
+        scene.add(glxcenter);
+
+    
+    window.onresize = function () {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		camera.aspect = width / height;
+		camera.updateProjectionMatrix();
+		renderer.setSize( width, height );
+		composer.setSize( width, height );
+		};
+
+	
+    var animate = function () {
 			requestAnimationFrame( animate );
-			const delta = clock.getDelta();
-			mixer.update( delta );
-			//stats.update();
-			composer.render();
-			}
+
+			//cube.rotation.x += 0.01;
+			son1.rotation.y += 0.001;
+            son2.rotation.y += 0.0005;
+            son3.rotation.y += 0.00025;
+            son4.rotation.y += 0.00001;
+            stats.update();
+			composer.render( scene, camera );
+			};
+
+		animate();
+        
+
 
     }
-		</script>
+			
+	</script>
 
 
 
