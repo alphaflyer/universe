@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-# step 3: giving systems positions
+# step 3: giving systems positions x,y,z
 
-import random, MySQLdb, array, math, string, collections
+import random, MySQLdb, math, string
 from progress.bar import Bar
 
 systems = []
@@ -42,10 +42,11 @@ def collect_systems(cur):
 
 def positions():
 
+    wiggle = random.randrange(-1,1,0.1) # varies the positions slightly to get more natural positions
     xpos = random.choice(xlg)       #random.randrange((unimax/8),unimax,1) # var pos between center (incl restricted area of 1/8 of size in the center) and max
     alpha = random.randrange(0,360)
-    ypos = xpos * math.sin(math.radians(alpha))
-    xpos = xpos * math.cos(math.radians(alpha))
+    ypos = xpos * math.sin(math.radians(alpha)) * wiggle
+    xpos = xpos * math.cos(math.radians(alpha)) * wiggle
 
     v = math.hypot(xpos, ypos)
     zmax = unimax / 10
@@ -81,7 +82,7 @@ def write_sys(lst):
 
 def xlog():
     n = 1
-    for i in range(unimax):         # builds array with nearest pos to center is often and farest item is rare
+    for i in range(unimax):         # builds list with nearest pos to center is often and farest item is rare
         n += 1
         log[0].append(unimax - i)
         #log[1].append(int(math.log10(n)))
