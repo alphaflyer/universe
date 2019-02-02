@@ -15,6 +15,8 @@ lumi = []
 name = []
 sunid = []
 lst = []
+agemax = []
+age = []
 
 db = MySQLdb.connect('localhost','universe','F7V4Z50Jl7HyKFI8','universe')
 cur = db.cursor()
@@ -59,12 +61,34 @@ def find_sun(suncls):
 def create_sun():
 
     i = suns[0].index(sunclass[-1])
-
-    temp.append(str(random.randint(suns[1][i],suns[2][i])))
-    mass.append(str(round((random.uniform(suns[3][i],suns[4][i])),2)))
-    radius.append(str(round((random.uniform(suns[5][i],suns[6][i])),2)))
-    lumi.append(str(round((random.uniform(suns[7][i],suns[8][i])),2)))
-
+    
+    # random
+    mc = round((random.uniform(suns[3][i],suns[4][i])),2)
+    t = random.randint(suns[1][i],suns[2][i])       
+        
+    # calc
+    agemax = math.pow(mc/m0,-2.5)
+    age = agemax * random.uniform(0.1,0.9)
+    l = math.pow(mc,3.5)    
+    
+    if mc < 1.66 * m0:
+        r = 1.06 * math.pow(mc,0.945)
+    else
+        r = 1.33 * math.pow(mc,0.555)
+    
+    temp.append(str(t))
+    mass.append(str(mc))
+    radius.append(str(r))
+    lumi.append(str(l))
+    agemax.append(str(agemax)
+    age.append(str(age))
+    
+def sun_age(m0, t0, mc):
+    
+    tc = math.pow(mc/m0,-2.5) * t0
+    tmax = tc / t0
+    print(tmax)
+    
 
 def sun_name():
 
